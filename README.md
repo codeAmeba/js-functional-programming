@@ -30,7 +30,48 @@ const b;
 console.log(c);
 let c = 2;
 // Uncaught ReferenceError: b is not defined at <anonymous>:2:13
-
-
 ```
 
+## 일급 함수
+자바스크립트에서 함수는 1급이며, 이말은 곧 함수를 값으로 다룰 수 있다는 말이다.
+
+```javascript
+const add5 = a => a + 5;
+console.log(add5(5)); // 10
+```
+
+그리고, 값으로 평가되기 때문에 함수를 다른 함수에 인자로 전달거나 함수의 실행 결과도 다시 함수를 반환할 수도 있다. 이를 고차함수라고 부른다. 이러한 특성을 이용한 것으로는 대표적으로 콜백이 있다.
+
+```javascript
+const multiply3 = a => a * 3;
+console.log(multiply3(add5(3))); // 24
+```
+
+위와 같은 자바스크립트 함수의 특성을 기반으로 조합성과 추상화의 도구로써 사용하여 자바스크립트의 함수형 프로그래밍이라는 패러다임이 가능하다.
+
+## 고차함수
+함수를 인자로 받거나 리턴값이 함수거나 혹은 둘 다인 함수를 고차함수라고 부른다.
+
+**함수를 인자로 받는 함수 예시**
+
+```javascript
+const times = (f, n) => {
+  let i = -1;
+  while (i++ < n) f(i);
+};
+
+times(console.log, 3);
+// 1
+// 2
+// 3
+```
+
+**함수를 리턴하는 함수 예시**
+함수를 리턴하며 동시에 클로저를 만들어 리턴함
+함수가 함수를 리턴할 때에는 결국 클로저를 리턴하기 위한 목적
+
+```javascript
+const addMaker = a => b => a + b;
+const add10 = addMaker(10);
+console.log(add10(5)); // 15
+```
