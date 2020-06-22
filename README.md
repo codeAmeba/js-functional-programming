@@ -3,7 +3,7 @@
 
 ***
 
-## 평가와 일급
+## 평가
 
 **평가(evaluation) : 코드가 계산되어 값이 되는 과정**
 자바스크립트는 브라우저 상에서 평가 단계와 실행 단계로 나뉘게 되며, 호이스팅은 평가 단계에서 일어난다.
@@ -75,3 +75,28 @@ const addMaker = a => b => a + b;
 const add10 = addMaker(10);
 console.log(add10(5)); // 15
 ```
+
+## ES6의 리스트 순회
+함수형 자바스크립트에서는 리스트 순회가 특히 중요하다.
+ES5까지는 `for`문으로 순회하던 것을 ES6부터는 아래와 같이 `for ...of`로 보다 간단하게 순회할 수 있게 되었다.
+
+```javascript
+const arr = [1, 2, 3];
+const str = 'abc';
+
+for (const a of arr) {
+  console.log(a);
+};
+// 1
+// 2
+// 3
+
+for (const a of str) {
+  console.log(a);
+};
+// a
+// b
+// c
+```
+
+이전에 비해 일단 문법이 간결해졌으며, 과정을 보여주기 보다는 더욱 **선언적인** 형태를 띄고 있다.
