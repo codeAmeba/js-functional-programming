@@ -100,3 +100,78 @@ for (const a of str) {
 ```
 
 이전에 비해 일단 문법이 간결해졌으며, 과정을 보여주기 보다는 더욱 **선언적인** 형태를 띄고 있다.
+
+## 이터러블/이터레이터 프로토콜
+Array, Set, Map은 **순회가 가능한 이터러블/이터레이터 프로토콜** 을 따르고 있다. 따라서 아래와 같이 각각 ES6에서 추가된 `for ...of`문을 통해 순회가 가능하다.
+
+**Array**
+
+```javascript
+const arr = [1, 2, 3];
+for (const a of arr) console.log(a);
+// 1
+// 2
+// 3
+```
+
+Array의 경우 key를 통해 접근 가능하다.
+
+
+**Set**
+
+```javascript
+const set = new Set([1, 2, 3]);
+for (const a of set) console.log(a);
+// 1
+// 2
+// 3
+```
+
+그러나 Set은 인덱스(key)를 통한 접근이 불가능하다.
+
+**Map**
+
+```javascript
+const map = new Map([['a', 1], ['b', 2], ['c', 3]]);
+for (const a of map) console.log(a);
+// (2) ["a", 1]
+// (2) ["b", 2]
+// (2) ["c", 3]
+```
+
+Map도 마찬가지로 인덱스를 통한 접근이 불가능하다.
+이말은 곧, `for`문과 `for ...of`문이 내부적으로 다르게 동작한다는 말이기도 하다.
+
+여기서 **이터러블** 의 의미에 대해 다시 한 번 짚고 넘어갈 필요가 있다.
+이터러블은, 이터레이터를 리턴하는 `[Symbol.iterator]()`를 가진 값인데, `[Symbol.iterator]()`가 무엇인지 이해를 돕기 위해 아래의 예시 코드를 보자.
+
+```javascript
+console.log(arr[Symbol.iterator]); // values() { [native code] }
+console.log(set[Symbol.iterator]); // values() { [native code] }
+console.log(map[Symbol.iterator]); // entries() { [native code] }
+```
+
+위와 같이 이터러블한 세 가지 객체에 대해 `[Symbol.iterator]()`로 접근했을 때 네이티브 함수가 담겨 있음을 알 수 있다. 그리고, 여기서 또 하나 실험을 해볼 수가 있다.
+
+```javascript
+arr[Symbol.iterator] = null;
+for (const a of arr) console.log(a);
+// Uncaught TypeError: arr is not iterable
+```
+
+기본적으로 내장되어 있던 `[Symbol.iterator]()` 값으로 `null`을 할당한 후에도 `for ...of`문으로 순회가 가능한지 보는 것인데, 위와 같이 해당 객체는 이터러블이 아니라는 에러 메시지를 볼 수 있다. 이를 통해 알 수 있는 것은 이터러블 객체를 이터러블이게 하는 것은 결국 `[Symbol.iterator]()`이라는 네이티브 함수라는 사실이다.
+
+그렇다면, 이터러블이 리턴한다는 **이터레이터** 란 무엇인가. 이터레이터는 `{value, done}` 객테를 리턴하며 `next()` 메서드를 갖고 있는 값이다.
+아래의 예시 코드를 보자.
+
+```javascript
+let iterator = arr[Symbol.iterator]();
+console.log(iterator.next()); // {value: 1, done: false}
+console.log(iterator.next()); // {value: 2, done: false}
+console.log(iterator.next()); // {value: 3, done: false}
+console.log(iterator.next()); // {value: undefined, done: true}
+```
+
+위와 같이 `next()` 메서드를 실행했을 때 `value`와 `done`이라는 키와 함께 값이 리턴됨을 알 수 있으며, 모든 값이 리턴됐을 경우에는 `{value: undefined, done: true}`가 리턴됨을 알 수 있다.
+
+이처럼 이터러블을 `for ...of`이나 `...(spread operator)` 등으로 동작하도록 정해놓은 규약이 **이터러블/이터레이터 프로토콜** 이라고 할 수 있다.
