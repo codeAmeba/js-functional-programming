@@ -112,9 +112,11 @@ for (const a of arr) console.log(a);
 // 1
 // 2
 // 3
+
+console.log(arr[0]); // 1
 ```
 
-Array의 경우 key를 통해 접근 가능하다.
+Array의 경우 인덱스(key)를 통해 접근 가능하다.
 
 
 **Set**
@@ -125,6 +127,8 @@ for (const a of set) console.log(a);
 // 1
 // 2
 // 3
+
+console.log(set[0]); // undefined
 ```
 
 그러나 Set은 인덱스(key)를 통한 접근이 불가능하다.
@@ -137,6 +141,8 @@ for (const a of map) console.log(a);
 // (2) ["a", 1]
 // (2) ["b", 2]
 // (2) ["c", 3]
+
+console.log(map(0)); // TypeError: map is not a function
 ```
 
 Map도 마찬가지로 인덱스를 통한 접근이 불가능하다.
@@ -161,7 +167,7 @@ for (const a of arr) console.log(a);
 
 기본적으로 내장되어 있던 `[Symbol.iterator]()` 값으로 `null`을 할당한 후에도 `for ...of`문으로 순회가 가능한지 보는 것인데, 위와 같이 해당 객체는 이터러블이 아니라는 에러 메시지를 볼 수 있다. 이를 통해 알 수 있는 것은 이터러블 객체를 이터러블이게 하는 것은 결국 `[Symbol.iterator]()`이라는 네이티브 함수라는 사실이다.
 
-그렇다면, 이터러블이 리턴한다는 **이터레이터** 란 무엇인가. 이터레이터는 `{value, done}` 객테를 리턴하며 `next()` 메서드를 갖고 있는 값이다.
+그렇다면, 이터러블이 리턴한다는 **이터레이터** 란 무엇인가. 이터레이터는 `{value, done}` 객체를 리턴하며 `next()` 메서드를 갖고 있는 값이다.
 아래의 예시 코드를 보자.
 
 ```javascript

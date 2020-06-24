@@ -18,3 +18,7 @@ console.log(iterator.next());
 console.log(iterator.next());
 console.log(iterator.next());
 console.log(iterator.next());
+
+console.log(arr[0]);
+console.log(set[0]);
+console.log(map(0));
