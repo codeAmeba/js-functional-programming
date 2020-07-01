@@ -129,6 +129,77 @@ const add10 = addMaker(10);
 console.log(add10(5)); // 15
 ```
 
+## map과 filter
+ES5에서 도입된 내장 함수 중 `map`과 `filter`가 있다. 이를 통해 함수형 자바스크립트를 사용하기가 보다 수월해졌다. `map`과 `filter`가 등장하기 전에는 아래와 같이 코드를 작성해야 했다.
+
+```javascript
+const users = [
+  {id: 1, name: 'AJ', age: 36},
+  {id: 2, name: 'JS', age: 32},
+  {id: 3, name: 'MJ', age: 23},
+  {id: 4, name: 'HY', age: 29},
+  {id: 5, name: 'SY', age: 30},
+  {id: 6, name: 'EB', age: 33},
+  {id: 7, name: 'TK', age: 27},
+  {id: 8, name: 'YJ', age: 35},
+  {id: 9, name: 'HH', age: 39},
+];
+
+// 30세 이상을 거른다
+let overThirty = [];
+for (let i = 0; i < users.length; i++) {
+  if (users[i].age >= 30) {
+    overThirty.push(users[i]);
+  }
+}
+
+// 30세 이상인 users의 name을 수집한다.
+let namesOverThirty = [];
+for (let i = 0; i < overThirty.length; i++) {
+  namesOverThirty.push(overThirty[i].name);
+}
+
+// 30세 미만의 users를 거른다
+let underThirty = [];
+for (let i = 0; i < users.length; i++) {
+  if (users[i].age < 30) {
+    underThirty.push(users[i]);
+  }
+}
+
+// 30세 미만 users의 age를 수집한다.
+let agesUnderThirty = [];
+for (let i = 0; i < underThirty.length; i++) {
+  agesUnderThirty.push(underThirty[i].age);
+}
+```
+
+우리에게 익숙한 `for`문이지만, `map`과 `filter`를 통해 더욱 심플하고 직관적인 코드로 리팩토링이 가능하다.
+
+위의 코드를 `map`과 `filter`의 매커니즘을 사용하여 리팩토링해보자.
+
+```javascript
+function myFilter(users, myFunc) {
+  let newUsers = [];
+  for (let i = 0; i < users.length; i++) {
+    if (myFunc(users[i])) {
+      newUsers.push(users[i]);
+    }
+  }
+  return newUsers;
+}
+
+console.log(
+  myFilter(users, function(users) {
+    return users.age >= 30;
+  })
+);
+```
+
+위의 코드가 `filter`의 동작을 구현한 고차함수다. 그 말은 곧, ES5에서 추가된 내장함수 `filter`는 함수를 인자로 받거나 값으로 내보내는 **고차함수** 라는 말이기도 하다.
+
+
+
 ## ES6의 리스트 순회
 함수형 자바스크립트에서는 리스트 순회가 특히 중요하다.
 ES5까지는 `for`문으로 순회하던 것을 ES6부터는 아래와 같이 `for ...of`로 보다 간단하게 순회할 수 있게 되었다.
