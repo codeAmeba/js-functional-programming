@@ -47,7 +47,7 @@ for (let i = 0; i < underThirty.length; i++) {
 console.log(agesUnderThirty); // => 30세 미만 users의 age만 담긴 배열이 출력된다.
 
 
-// map / filter
+// filter
 function myFilter(users, myFunc) {
   let newUsers = [];
   for (let i = 0; i < users.length; i++) {
@@ -69,3 +69,48 @@ console.log(
     return users.age < 30;
   })
 );
+
+// map
+function myMap(list, mapper) {
+  let newList = [];
+  for (let i = 0; i < list.length; i++) {
+    newList.push(mapper(list[i]));
+  }
+  return newList;
+}
+
+const over30 = myFilter(users, function(users) {
+  return users.age >= 30;
+});
+
+console.log(over30);
+
+const nameOver30 = myMap(over30, function(user) {
+  return user.name;
+});
+
+console.log(nameOver30);
+
+const under30 = myFilter(users, function(users) {
+  return users.age < 30;
+});
+
+const nameUnder30 = myMap(under30, function(user) {
+  return user.name;
+});
+
+console.log(nameUnder30);
+
+
+console.log(
+  myMap(
+    myFilter(users, function(user) { return user.age < 30; }),
+    function(user) { return user.age; })
+);
+
+console.log(
+  myMap(
+    myFilter(users, function(user) { return user.age >= 30; }),
+    function(user) { return user.name; })
+);
+

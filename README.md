@@ -189,14 +189,72 @@ function myFilter(users, myFunc) {
   return newUsers;
 }
 
-console.log(
+console.log( // 30세 이상 users 출력
   myFilter(users, function(users) {
     return users.age >= 30;
+  })
+);
+
+console.log( // 30세 미만 users 출력
+  myFilter(users, function(users) {
+    return users.age < 30;
   })
 );
 ```
 
 위의 코드가 `filter`의 동작을 구현한 고차함수다. 그 말은 곧, ES5에서 추가된 내장함수 `filter`는 함수를 인자로 받거나 값으로 내보내는 **고차함수** 라는 말이기도 하다.
+
+다음으로 `map`의 동작을 구현해보자.
+
+```javascript
+function myMap(list, mapper) {
+  let newList = [];
+  for (let i = 0; i < list.length; i++) {
+    newList.push(mapper(list[i]));
+  }
+  return newList;
+}
+
+const over30 = myFilter(users, function(users) {
+  return users.age >= 30;
+});
+
+console.log(over30);
+
+const nameOver30 = myMap(over30, function(user) {
+  return user.name;
+});
+
+console.log(nameOver30); // 30세 이상의 이름만 출력
+
+const under30 = myFilter(users, function(users) {
+  return users.age < 30;
+});
+
+const nameUnder30 = myMap(under30, function(user) {
+  return user.name;
+});
+
+console.log(nameUnder30); // 30세 미만의 이름만 출력
+```
+
+위와 같이 `map`과 `filter`를 사용하여 `for`문으로 이루어졌던 코드에서 중복되던 내용들을 제거하고 재사용성을 높였다.
+
+또한, 대입문을 없애고 함수끼리 중첩 사용이 가능하기 때문에 위의 코드보다 더욱 간결한 코드 작성이 가능하다.
+
+```javascript
+console.log( // 30세 미만의 나이 출력
+  myMap(
+    myFilter(users, function(user) { return user.age < 30; }),
+    function(user) { return user.age; })
+);
+
+console.log( // 30세 이상의 이름 출력
+  myMap(
+    myFilter(users, function(user) { return user.age >= 30; }),
+    function(user) { return user.name; })
+);
+```
 
 
 
